@@ -3,6 +3,5 @@ docker stuff
 
 
 
-#this are docker stuff of my works.
+#Some containerised environment useful for develop
 
-#OpenAM contains the most cool stuff
