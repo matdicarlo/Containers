@@ -1,0 +1,3 @@
+#create network first:
+
+podman network create apicurio-net

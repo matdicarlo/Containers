@@ -1,0 +1,34 @@
+version: '3.8'
+
+networks:
+  apicurio-net:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: apicurio-postgres
+    networks:
+      - apicurio-net
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: apicurio-registry
+      POSTGRES_USER: apicurio-registry
+      POSTGRES_PASSWORD: password
+
+  apicurio-registry:
+    image: apicurio/apicurio-registry:latest
+    depends_on:
+      - postgres
+    networks:
+      - apicurio-net
+    ports:
+      - "8080:8080"
+    environment:
+      APICURIO_STORAGE_KIND: sql
+      APICURIO_STORAGE_SQL_KIND: postgresql
+      APICURIO_DATASOURCE_URL: jdbc:postgresql://apicurio-postgres:5432/apicurio-registry
+      APICURIO_DATASOURCE_USERNAME: apicurio-registry
+      APICURIO_DATASOURCE_PASSWORD: password
+
