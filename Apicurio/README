@@ -1,3 +1,30 @@
 #create network first:
-
 podman network create apicurio-net
+#then launch the yaml
+podman-compose -f apicurio-postgresql.yml up
+
+
+#If apicurio container show a connection error it's mainly because the postgresql container is not ready yet. So it is better to run containers manually with:
+#create network
+podman network create apicurio-net
+
+#run postgressql container and wait to start
+podman run -d \
+  --name apicurio-postgres \
+  --network apicurio-net \
+  -e POSTGRES_DB=apicurio-registry \
+  -e POSTGRES_USER=apicurio-registry \
+  -e POSTGRES_PASSWORD=password \
+  -p 5432:5432 \
+  postgres:15
+
+#run apicurio container
+podman run -it --rm \
+  -p 8080:8080 \
+  --network apicurio-net \
+  -e APICURIO_STORAGE_KIND=sql \
+  -e APICURIO_STORAGE_SQL_KIND=postgresql \
+  -e APICURIO_DATASOURCE_URL=jdbc:postgresql://apicurio-postgres:5432/apicurio-registry \
+  -e APICURIO_DATASOURCE_USERNAME=apicurio-registry \
+  -e APICURIO_DATASOURCE_PASSWORD=password \
+  apicurio/apicurio-registry:latest
