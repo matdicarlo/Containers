@@ -1,7 +1,2 @@
-# Dockerizer
-docker stuff
-
-
-
-#Some containerised environment useful for develop
+# Container stuff mainly compose yml
 
