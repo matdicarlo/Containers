@@ -28,3 +28,22 @@ podman run -it --rm \
   -e APICURIO_DATASOURCE_USERNAME=apicurio-registry \
   -e APICURIO_DATASOURCE_PASSWORD=password \
   apicurio/apicurio-registry:latest
+
+#Now what?
+#access to the UI: http://localhost:8080/
+#list artifact
+curl http://localhost:8080/apis/registry/v2/groups/default/artifacts
+
+#upload an artifact
+curl -X POST http://localhost:8080/apis/registry/v2/groups/default/artifacts \
+     -H "Content-Type: application/json" \
+     -H "X-Registry-ArtifactId: my-schema" \
+     --data '{"type":"record","name":"Test","fields":[{"name":"f1","type":"string"}]}'
+
+#check health status
+curl http://localhost:8080/health
+#retrieve artifact metadata
+curl http://localhost:8080/apis/registry/v2/groups/default/artifacts/my-schema/meta
+
+
+
