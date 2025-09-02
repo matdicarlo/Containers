@@ -1,0 +1,7 @@
+##############
+Run the container: 
+podman-compose -f single_node_kafka_compose.yaml up
+
+
+
+
